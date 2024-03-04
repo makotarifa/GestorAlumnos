@@ -23,9 +23,16 @@ public partial class RegistroView : ContentPage
         bool userExists;
         var userName = RUVM.UserItem.UserName;
         var password = RUVM.UserItem.Password;
+        var email = RUVM.UserItem.Email;
         var nombre = RUVM.Persona.Nombre;
         var apellidos = RUVM.Persona.Apellidos;
+        var dni = RUVM.Persona.DNI;
         var centro = RUVM.Persona.CentroEstudio;
+        var tipoGrado = RUVM.Persona.TipoGrado;
+        var nombreGrado = RUVM.Persona.NombreGrado;
+        var profesor = RUVM.Persona.Profesor;
+        var tutor = RUVM.Persona.Tutor;
+
 
         if (!string.IsNullOrWhiteSpace(nombre) && !string.IsNullOrWhiteSpace(apellidos))
         {
@@ -43,16 +50,22 @@ public partial class RegistroView : ContentPage
                     await firebaseClient.Child("Users").PostAsync(new UserItem
                     {
                         UserName = userName,
-                        Password = Encript.GetSHA256(password)
+                        Password = Encript.GetSHA256(password),
+                        Email = email
                     });
 
                     await firebaseClient.Child("DatosPersona").PostAsync(new Persona
                     {
                         Nombre = nombre,
                         Apellidos = apellidos,
+                        DNI = dni,
                         CentroEstudio = centro,
+                        TipoGrado = tipoGrado,
+                        NombreGrado = nombreGrado,
+                        Profesor = profesor,
+                        Tutor = tutor,
                         UserName = userName,
-                    });
+                    }) ;
 
 
                     await this.DisplayAlert("Confirmacion", "Usuario creado con exito.", "Vale");
