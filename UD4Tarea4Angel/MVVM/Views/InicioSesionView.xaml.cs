@@ -32,7 +32,8 @@ public partial class InicioSesionView : ContentPage
             userCorrect = await CheckUserAndPass(userName, hashPassword);
             if (userCorrect)
             {
-                await this.DisplayAlert("Confirmación", "Todo correcto.", "Vale");
+                await Navigation.PushAsync(new SelectorDiasView(userName));
+
             } else
             {
                 await this.DisplayAlert("Error", "El usuario o la contraseña no son correctos.", "Vale");

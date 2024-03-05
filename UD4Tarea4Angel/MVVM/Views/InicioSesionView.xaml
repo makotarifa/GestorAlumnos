@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="UD4Tarea4Angel.MVVM.Views.InicioSesionView"
              Title="InicioSesionView"
-             BackgroundColor="CyanDark">
+             BackgroundColor="DarkCyan">
     <VerticalStackLayout Padding="50"
                          Spacing="20">
         <Label Text="FORMACIÓN EN CENTROS DE TRABAJO."

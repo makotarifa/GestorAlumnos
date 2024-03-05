@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="UD4Tarea4Angel.MVVM.Views.SelectorDiasView"
+             Title="SelectorDiasView">
+    <VerticalStackLayout>
+        <Label Text="Selecciona una fecha:" />
+        <DatePicker x:Name="miDatePicker" DateSelected="OnDateSelected" Date="{Binding Dia.Fecha}"/>
+        
+        <Label Text="Actividad desarrollada:" />
+        <Entry x:Name="actividadEntry" Placeholder="Ingrese la actividad desarrollada" Text="{Binding Dia.ActividadDesarrollada}"/>
+
+        <Label Text="Tiempo empleado (horas):" />
+        <Stepper x:Name="tiempoStepper" Minimum="1" Maximum="8" Increment="1" Value="{Binding Dia.TiempoEmpleado}" />
+        <Label Text="{Binding Path=Value, Source={x:Reference tiempoStepper}, StringFormat='Tiempo seleccionado: {0} horas'}" />
+
+        <Label Text="Observaciones:" />
+        <Editor x:Name="observacionesEditor" Placeholder="Ingrese observaciones" Text="{Binding Dia.Observaciones}"/>
+        <Button Text="Agregar" Clicked="OnAgregarClicked" HorizontalOptions="Center" Margin="0, 0"/>
+
+
+    </VerticalStackLayout>
+</ContentPage>
