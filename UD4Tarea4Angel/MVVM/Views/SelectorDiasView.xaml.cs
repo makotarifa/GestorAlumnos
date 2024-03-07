@@ -28,9 +28,11 @@ public partial class SelectorDiasView : ContentPage
         //Si existe el dia, coge el dia de la base de datos, si no genera un en blanco con la fecha de DatePicker
         if (existsDay)
         {
+            AgregarEditarBotton.Text = "Editar";
             SDVM.Dia = await GetDayFromDatabase(SDVM.Dia.Fecha, currentUsername);
         } else
         {
+            AgregarEditarBotton.Text = "Agregar";
             SDVM.Dia = new Dia{
                 Fecha = miDatePicker.Date,
                 ActividadDesarrollada = "",
@@ -110,6 +112,8 @@ public partial class SelectorDiasView : ContentPage
                 });
 
                 await this.DisplayAlert("Confirmacion", "Se ha agregado el dia.", "Vale");
+
+                AgregarEditarBotton.Text = "Editar";
             }
         }
         else
