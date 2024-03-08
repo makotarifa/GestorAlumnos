@@ -37,20 +37,20 @@
        VerticalOptions="CenterAndExpand" 
        HorizontalOptions="StartAndExpand"  />
 
-            <Label Text="Nombre (Obligatorio): "/>
+            <Label Text="Nombre (*): "/>
             <Entry x:Name="nombreEntry" 
        Text="{Binding Persona.Nombre}" />
 
-            <Label Text="Apellidos (Obligatorio): "/>
+            <Label Text="Apellidos (*): "/>
             <Entry x:Name="apellidosEntry" 
        Placeholder="Apellidos"               
        Text="{Binding Persona.Apellidos}" />
 
-            <Label Text="DNI/NIE (Obligatorio): "/>
+            <Label Text="DNI/NIE (*): "/>
             <Entry x:Name="dniEntry" 
        Placeholder="DNI"               
        Text="{Binding Persona.DNI}" />
-            <Label Text="Centro :"/>
+            <Label Text="Centro (*):"/>
             <Picker SelectedIndex="{Binding Persona.CentroEstudio}">
                 <Picker.Items>
                     <x:String>I.E.S Saladillo</x:String>
@@ -59,7 +59,7 @@
                 </Picker.Items>
             </Picker>
 
-            <Label Text="Tipo de grado :"/>
+            <Label Text="Tipo de grado (*):"/>
             <Picker SelectedIndex="{Binding Persona.TipoGrado}">
                 <Picker.Items>
                     <x:String>CFGB</x:String>
@@ -68,15 +68,28 @@
                 </Picker.Items>
             </Picker>
 
-            <Label Text="Nombre Grado :"/>
+            <Label Text="Nombre del grado cursado (*):"/>
             <Entry x:Name="gradoEntry" 
-                Placeholder="Desarrollo de Aplicaciones Multiplataformas" 
+                Placeholder="Desarrollo de Aplicaciones Multiplataformas." 
                 Text="{Binding Persona.NombreGrado}" />
 
-            <Label Text="Tutor laboral :"/>
+            <Label Text="Tutor del centro educativo (*):"/>
+
+            <Entry x:Name="profesorEntry" 
+                 Placeholder="Amadeo Morales" 
+                 Text="{Binding Persona.ProfesorTutor}" />
+
+            <Label Text="Centro de trabajo (*):"/>
+
+            <Entry x:Name="centroTrabajoEntry" 
+                 Placeholder="Inserte el nombre de la empresa." 
+                 Text="{Binding Persona.CentroTrabajo}" />
+
+            <Label Text="Tutor laboral (*):"/>
+
             <Entry x:Name="tutorEntry" 
-                 Placeholder="David Delgado" 
-                 Text="{Binding Persona.Tutor}" />
+                 Placeholder="David Perez" 
+                 Text="{Binding Persona.TutorLaboral}" />
 
             <Button Text="Registrarse" Clicked="OnRegisterClicked" />
     </VerticalStackLayout>

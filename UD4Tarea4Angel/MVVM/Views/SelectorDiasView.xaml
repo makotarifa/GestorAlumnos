@@ -16,24 +16,38 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Label Grid.Row="0" Text="Selecciona una fecha:" />
         <DatePicker Grid.Row="1" x:Name="miDatePicker" DateSelected="OnDateSelected" Date="{Binding Dia.Fecha}"/>
 
-        <Label Grid.Row="2" Text="Actividades desarrollada:" />
-        <Editor Grid.Row="3" x:Name="actividadEntry" Placeholder="Ingrese la actividad desarrollada" Text="{Binding Dia.ActividadDesarrollada}"/>
+        <Label Grid.Row="2" Text="Actividades desarrolladas:" />
+        <Editor Grid.Row="3" x:Name="actividadEntry" Placeholder="Ingrese la actividad desarrollada" Text="{Binding ActividadActual.ActividadDesarrollada}"/>
 
         <Label Grid.Row="4" Text="Tiempo empleado (horas):" />
-        <Stepper Grid.Row="5" x:Name="tiempoStepper" Minimum="1" Maximum="8" Increment="1" Value="{Binding Dia.TiempoEmpleado}" />
+        <Stepper Grid.Row="5" x:Name="tiempoStepper" Minimum="1" Maximum="8" Increment="1" Value="{Binding ActividadActual.TiempoEmpleado}" />
         <Label Grid.Row="6" Text="{Binding Path=Value, Source={x:Reference tiempoStepper}, StringFormat='Tiempo seleccionado: {0} horas'}" />
 
         <Label Grid.Row="7" Text="Observaciones:" />
-        <Editor Grid.Row="8" x:Name="observacionesEditor" Placeholder="Ingrese observaciones" Text="{Binding Dia.Observaciones}"/>
+        <Editor Grid.Row="8" x:Name="observacionesEditor" Placeholder="Ingrese observaciones" Text="{Binding ActividadActual.Observaciones}"/>
 
-        <Button Grid.Row="9" x:Name="AgregarEditarBotton" Text="Agregar" Clicked="OnAgregarClicked" HorizontalOptions="CenterAndExpand" VerticalOptions="End" Margin="0, 0"/>
+        <Label Grid.Row="9" Text="Lista de Actividades:" />
+        <ListView Grid.Row="10" x:Name="actividadesListView" ItemsSource="{Binding Actividades}" ItemTapped="OnActividadTapped">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <VerticalStackLayout>
+                            <Label Text="{Binding ActividadDesarrollada}" />
+                            <Label Text="{Binding TiempoEmpleado, StringFormat='Tiempo: {0} horas'}" />
+                        </VerticalStackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
 
+        <Button Grid.Row="11" x:Name="AgregarEditarBotton" Text="Agregar" Clicked="OnAgregarClicked" HorizontalOptions="CenterAndExpand" VerticalOptions="End" Margin="0, 0"/>
     </Grid>
-
 </ContentPage>

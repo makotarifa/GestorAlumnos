@@ -32,7 +32,7 @@ public partial class InicioSesionView : ContentPage
             userCorrect = await CheckUserAndPass(userName, hashPassword);
             if (userCorrect)
             {
-                await Navigation.PushAsync(new SelectorDiasView(userName));
+                await Navigation.PushAsync(new MenuPrincipal(userName));
 
             } else
             {

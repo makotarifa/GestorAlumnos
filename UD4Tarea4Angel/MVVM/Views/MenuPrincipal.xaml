@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="UD4Tarea4Angel.MVVM.Views.MenuPrincipal"
+             Title="MenuPrincipal">
+    <VerticalStackLayout Spacing="20"
+                         VerticalOptions="Center">
+        <Label 
+            x:Name="labelCabecera"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+
+        <Button Text="Gestionar dias" Clicked="OnDiasClicked" HorizontalOptions="Center" BackgroundColor="#fea643" TextColor="#f3f9fa" Margin="0, 0"/>
+
+        <Button Text="Editar información" Clicked="OnGestionarClicked" HorizontalOptions="Center" BackgroundColor="#fea643" TextColor="#f3f9fa" Margin="0, 0"/>
+
+
+
+    </VerticalStackLayout>
+</ContentPage>

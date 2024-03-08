@@ -21,51 +21,32 @@ public partial class RegistroView : ContentPage
     private async void OnRegisterClicked(object sender, EventArgs e)
     {
         bool userExists;
-        var userName = RUVM.UserItem.UserName;
-        var password = RUVM.UserItem.Password;
-        var email = RUVM.UserItem.Email;
-        var nombre = RUVM.Persona.Nombre;
-        var apellidos = RUVM.Persona.Apellidos;
-        var dni = RUVM.Persona.DNI;
-        var centro = RUVM.Persona.CentroEstudio;
-        var tipoGrado = RUVM.Persona.TipoGrado;
-        var nombreGrado = RUVM.Persona.NombreGrado;
-        var profesor = RUVM.Persona.Profesor;
-        var tutor = RUVM.Persona.Tutor;
 
 
-        if (!string.IsNullOrWhiteSpace(nombre) && !string.IsNullOrWhiteSpace(apellidos))
+        if (!string.IsNullOrWhiteSpace(RUVM.UserItem.UserName) && !string.IsNullOrWhiteSpace(RUVM.UserItem.Password) )
         {
-            if (string.IsNullOrWhiteSpace(centro))
+            if (string.IsNullOrWhiteSpace(RUVM.Persona.CentroEstudio))
             {
-                centro = "No indicado";
+                RUVM.Persona.CentroEstudio = "No indicado";
             }
 
-            userExists = await CheckIfUserExists(userName);
+            userExists = await CheckIfUserExists(RUVM.UserItem.UserName);
 
-            if(!string.IsNullOrWhiteSpace(userName) && !string.IsNullOrWhiteSpace(password))
+            if(!string.IsNullOrWhiteSpace(RUVM.Persona.Nombre) && !string.IsNullOrWhiteSpace(RUVM.Persona.Apellidos) && !string.IsNullOrWhiteSpace(RUVM.Persona.DNI)
+                 && !string.IsNullOrWhiteSpace(RUVM.Persona.CentroEstudio) && !string.IsNullOrWhiteSpace(RUVM.Persona.TipoGrado) && !string.IsNullOrWhiteSpace(RUVM.Persona.NombreGrado)
+                  && !string.IsNullOrWhiteSpace(RUVM.Persona.ProfesorTutor) && !string.IsNullOrWhiteSpace(RUVM.Persona.CentroTrabajo) && !string.IsNullOrWhiteSpace(RUVM.Persona.TutorLaboral))
             {
                 if (!userExists)
                 {  // Agregar el nuevo usuario si no existe
                     await firebaseClient.Child("Users").PostAsync(new UserItem
                     {
-                        UserName = userName,
-                        Password = Encript.GetSHA256(password),
-                        Email = email
+                        UserName = RUVM.UserItem.UserName,
+                        Password = Encript.GetSHA256(RUVM.UserItem.Password),
+                        Email = RUVM.UserItem.Email
                     });
 
-                    await firebaseClient.Child("DatosPersona").PostAsync(new Persona
-                    {
-                        Nombre = nombre,
-                        Apellidos = apellidos,
-                        DNI = dni,
-                        CentroEstudio = centro,
-                        TipoGrado = tipoGrado,
-                        NombreGrado = nombreGrado,
-                        Profesor = profesor,
-                        Tutor = tutor,
-                        UserName = userName,
-                    }) ;
+                    RUVM.Persona.UserName = RUVM.UserItem.UserName;
+                    await firebaseClient.Child("DatosPersona").Child(RUVM.Persona.Key).PutAsync(RUVM.Persona);
 
 
                     await this.DisplayAlert("Confirmacion", "Usuario creado con exito.", "Vale");
@@ -78,7 +59,7 @@ public partial class RegistroView : ContentPage
                 }
             } else
             {
-                await this.DisplayAlert("Error", "Los datos personales no pueden estar en blanco.", "Vale");
+                await this.DisplayAlert("Error", "Revisa los campos obligatorios.", "Vale");
             }
 
                 
