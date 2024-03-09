@@ -8,7 +8,7 @@
         <VerticalStackLayout Padding="30"
                              Spacing="20">
 
-            <Label Text="Registrar usuario."
+            <Label Text="Registrarse como alumno."
                    FontSize="Large"
                VerticalOptions="CenterAndExpand" 
                HorizontalOptions="CenterAndExpand" />
@@ -73,10 +73,10 @@
                 Placeholder="Desarrollo de Aplicaciones Multiplataformas." 
                 Text="{Binding Persona.NombreGrado}" />
 
-            <Label Text="Tutor del centro educativo (*):"/>
+            <Label Text="Usuario del tutor educativo (*):"/>
 
             <Entry x:Name="profesorEntry" 
-                 Placeholder="Amadeo Morales" 
+                 Placeholder="espermac083" 
                  Text="{Binding Persona.ProfesorTutor}" />
 
             <Label Text="Centro de trabajo (*):"/>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="UD4Tarea4Angel.MVVM.Views.SelectorAlumnosView"
+             Title="SelectorAlumnosView">
+    <VerticalStackLayout Spacing="20" Padding="20">
+        <Label 
+            Text="Listado de alumnos a cargo."
+            FontSize="Medium"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+
+        <ListView x:Name="alumnosListView" ItemsSource="{Binding AlumnosCollection}" ItemTapped="OnAlumnoTapped">
+            <ListView.ItemTemplate>
+                <DataTemplate >
+                    <ViewCell >
+                        <VerticalStackLayout Padding="0, 0, 0, 20">
+                            <Label Text="{Binding UserName, StringFormat='Usuario: {0}'}" />
+                            <HorizontalStackLayout>
+                                <Label Text="{Binding Nombre, StringFormat='Nombre: {0}'}" />
+                                <Label Padding="10, 0, 0, 0" Text="{Binding Apellidos, StringFormat='Apellidos: {0}'}" />
+                            </HorizontalStackLayout>
+
+                        </VerticalStackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.SeparatorColor>
+                <Color>#CCCCCC</Color>
+            </ListView.SeparatorColor>
+        </ListView>
+        
+    </VerticalStackLayout>
+</ContentPage>

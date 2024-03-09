@@ -20,7 +20,7 @@ public partial class RegistroView : ContentPage
 
     private async void OnRegisterClicked(object sender, EventArgs e)
     {
-        bool userExists;
+        bool userExists, profesorExists;
 
 
         if (!string.IsNullOrWhiteSpace(RUVM.UserItem.UserName) && !string.IsNullOrWhiteSpace(RUVM.UserItem.Password) )
@@ -36,26 +36,33 @@ public partial class RegistroView : ContentPage
                  && !string.IsNullOrWhiteSpace(RUVM.Persona.CentroEstudio) && !string.IsNullOrWhiteSpace(RUVM.Persona.TipoGrado) && !string.IsNullOrWhiteSpace(RUVM.Persona.NombreGrado)
                   && !string.IsNullOrWhiteSpace(RUVM.Persona.ProfesorTutor) && !string.IsNullOrWhiteSpace(RUVM.Persona.CentroTrabajo) && !string.IsNullOrWhiteSpace(RUVM.Persona.TutorLaboral))
             {
-                if (!userExists)
-                {  // Agregar el nuevo usuario si no existe
-                    await firebaseClient.Child("Users").PostAsync(new UserItem
+                profesorExists = await CheckIfProfesorUserExists(RUVM.Persona.ProfesorTutor);
+
+                if (profesorExists) {
+                    if (!userExists)
+                    {  // Agregar el nuevo usuario si no existe
+                        await firebaseClient.Child("AlumnoUsers").PostAsync(new UserItem
+                        {
+                            UserName = RUVM.UserItem.UserName,
+                            Password = Encript.GetSHA256(RUVM.UserItem.Password),
+                            Email = RUVM.UserItem.Email
+                        });
+
+                        RUVM.Persona.UserName = RUVM.UserItem.UserName;
+                        await firebaseClient.Child("DatosPersona").Child(RUVM.Persona.Key).PutAsync(RUVM.Persona);
+
+
+                        await this.DisplayAlert("Confirmacion", "Usuario creado con exito.", "Vale");
+
+                        await Navigation.PopAsync();
+                    }
+                    else
                     {
-                        UserName = RUVM.UserItem.UserName,
-                        Password = Encript.GetSHA256(RUVM.UserItem.Password),
-                        Email = RUVM.UserItem.Email
-                    });
-
-                    RUVM.Persona.UserName = RUVM.UserItem.UserName;
-                    await firebaseClient.Child("DatosPersona").Child(RUVM.Persona.Key).PutAsync(RUVM.Persona);
-
-
-                    await this.DisplayAlert("Confirmacion", "Usuario creado con exito.", "Vale");
-
-                    await Navigation.PopAsync();
-                }
-                else
+                        await this.DisplayAlert("Error", "El usuario ya existe.", "Vale");
+                    }
+                } else
                 {
-                    await this.DisplayAlert("Error", "El usuario ya existe.", "Vale");
+                    await this.DisplayAlert("Error", "No existe ningun profesor con ese nombre de usuario.", "Vale");
                 }
             } else
             {
@@ -73,7 +80,17 @@ public partial class RegistroView : ContentPage
     private async Task<bool> CheckIfUserExists(string userName)
     {
         // Realizar una consulta para verificar si el usuario ya existe
-        var users = await firebaseClient.Child("Users").OnceAsync<UserItem>();
+        var users = await firebaseClient.Child("AlumnoUsers").OnceAsync<UserItem>();
+
+        // Devuelve si existe algun objeto
+        return users.Any(u => u.Object.UserName == userName);
+
+    }
+
+    private async Task<bool> CheckIfProfesorUserExists(string userName)
+    {
+        // Realizar una consulta para verificar si el usuario ya existe
+        var users = await firebaseClient.Child("ProfesorUsers").OnceAsync<UserItem>();
 
         // Devuelve si existe algun objeto
         return users.Any(u => u.Object.UserName == userName);

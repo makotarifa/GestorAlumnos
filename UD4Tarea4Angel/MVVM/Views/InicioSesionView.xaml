@@ -31,6 +31,16 @@
                IsPassword="True" 
                PlaceholderColor="#e3953e"
                Text="{Binding UserItem.Password}" />
+
+            <HorizontalStackLayout
+                Spacing="20">
+                <Label Text="Modo Alumno" x:Name="lblModo"
+               FontSize="Small"
+               VerticalOptions="CenterAndExpand" 
+               HorizontalOptions="StartAndExpand" />
+                <Switch x:Name="notificationSwitch" Toggled="OnSwitchToggled"/>
+            </HorizontalStackLayout>
+
         </VerticalStackLayout>
 
         <Button Text="Iniciar Sesion" Clicked="OnLoginClicked" HorizontalOptions="Center" BackgroundColor="#fea643" TextColor="#f3f9fa" Margin="0, 0"/>

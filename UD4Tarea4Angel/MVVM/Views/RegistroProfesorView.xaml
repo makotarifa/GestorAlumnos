@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="UD4Tarea4Angel.MVVM.Views.RegistroProfesorView"
+             Title="RegistroProfesorView">
+    <ScrollView>
+        <VerticalStackLayout Padding="30"
+                             Spacing="20">
+
+            <Label Text="Registrarse como profesor."
+                   FontSize="Large"
+               VerticalOptions="CenterAndExpand" 
+               HorizontalOptions="CenterAndExpand" />
+            <Label Text="Datos de acceso."
+                   FontSize="Medium"
+                   Padding="0, 20"
+                    VerticalOptions="CenterAndExpand" 
+                    HorizontalOptions="StartAndExpand" />
+
+            <Entry x:Name="usernameEntry" 
+       Placeholder="Usuario"               
+       Text="{Binding UserItem.UserName}" />
+
+            <Entry x:Name="emailEntry" 
+       Placeholder="Email"               
+       Text="{Binding UserItem.Email}" />
+
+            <Entry x:Name="passwordEntry" 
+       Placeholder="Contraseña" 
+       IsPassword="True" 
+       Text="{Binding UserItem.Password}" />
+
+            <Label Text="Datos personales"
+                   FontSize="Medium"
+                   Padding="0, 20"
+       VerticalOptions="CenterAndExpand" 
+       HorizontalOptions="StartAndExpand"  />
+
+            <Label Text="Nombre (*): "/>
+            <Entry x:Name="nombreEntry" 
+       Text="{Binding Persona.Nombre}" />
+
+            <Label Text="Apellidos (*): "/>
+            <Entry x:Name="apellidosEntry" 
+       Placeholder="Apellidos"               
+       Text="{Binding Persona.Apellidos}" />
+
+            <Label Text="DNI/NIE (*): "/>
+            <Entry x:Name="dniEntry" 
+       Placeholder="DNI"               
+       Text="{Binding Persona.DNI}" />
+            <Label Text="Centro (*):"/>
+            <Picker SelectedIndex="{Binding Persona.CentroEstudio}">
+                <Picker.Items>
+                    <x:String>I.E.S Saladillo</x:String>
+                    <x:String>I.E.S Kursaal</x:String>
+                    <x:String>I.E.S Almadraba</x:String>
+                </Picker.Items>
+            </Picker>
+
+            <Button Text="Registrarse" Clicked="OnRegisterClicked" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

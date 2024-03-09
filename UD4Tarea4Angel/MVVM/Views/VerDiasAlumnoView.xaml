@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="UD4Tarea4Angel.MVVM.Views.VerDiasAlumnoView"
+             Title="VerDiasAlumnoView">
+    <VerticalStackLayout Spacing="20" Padding="20">
+        <Label 
+            x:Name="alumnoCabecera"
+            Text="Dias del alumno: "
+            FontSize="Medium"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+
+        <Button Text="📄 Generar PDF" Clicked="OnGeneratePDFClicked" HorizontalOptions="Center" BackgroundColor="OrangeRed" TextColor="#f3f9fa" Margin="0, 0"/>
+        <ListView x:Name="diasListView" ItemsSource="{Binding Dias}" ItemTapped="OnDiaTapped">
+            <ListView.ItemTemplate>
+                <DataTemplate >
+                    <ViewCell >
+                        <VerticalStackLayout Margin="0">
+                            <Label Padding="20" Text="{Binding Fecha, StringFormat='Dia con fecha: {0}'}" />
+                        </VerticalStackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.SeparatorColor>
+                <Color>#CCCCCC</Color>
+            </ListView.SeparatorColor>
+        </ListView>
+    </VerticalStackLayout>
+</ContentPage>
