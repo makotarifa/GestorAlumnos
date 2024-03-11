@@ -2,56 +2,69 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="UD4Tarea4Angel.MVVM.Views.RegistroView"
-             Title="Registrarse">
+             Title=""
+             BackgroundColor="#008193">
     
     <ScrollView>
         <VerticalStackLayout Padding="30"
                              Spacing="20">
 
-            <Label Text="Registrarse como alumno."
+            <Label Text="Registrarse como alumno." TextColor="#fafafa"
                    FontSize="Large"
                VerticalOptions="CenterAndExpand" 
                HorizontalOptions="CenterAndExpand" />
-            <Label Text="Datos de acceso."
+            <Label Text="Datos de acceso." TextColor="#fafafa"
                    FontSize="Medium"
                    Padding="0, 20"
                     VerticalOptions="CenterAndExpand" 
                     HorizontalOptions="StartAndExpand" />
 
             <Entry x:Name="usernameEntry" 
-       Placeholder="Usuario"               
-       Text="{Binding UserItem.UserName}" />
+            Placeholder="Usuario"       
+                   TextColor="#fafafa"
+                   PlaceholderColor="#e3953e"
+            Text="{Binding UserItem.UserName}" />
 
             <Entry x:Name="emailEntry" 
-       Placeholder="Email"               
-       Text="{Binding UserItem.Email}" />
+            Placeholder="Email"           
+                   TextColor="#fafafa"
+                   PlaceholderColor="#e3953e"
+            Text="{Binding UserItem.Email}" />
 
             <Entry x:Name="passwordEntry" 
-       Placeholder="Contraseña" 
-       IsPassword="True" 
-       Text="{Binding UserItem.Password}" />
+            Placeholder="Contraseña" 
+                   TextColor="#fafafa"
+                   PlaceholderColor="#e3953e"
+            IsPassword="True" 
+            Text="{Binding UserItem.Password}" />
 
-            <Label Text="Datos personales"
-                   FontSize="Medium"
-                   Padding="0, 20"
-       VerticalOptions="CenterAndExpand" 
-       HorizontalOptions="StartAndExpand"  />
+            <Label Text="Datos personales" TextColor="#fafafa"
+            FontSize="Medium"
+            Padding="0, 20"
+            VerticalOptions="CenterAndExpand" 
+            HorizontalOptions="StartAndExpand"  />
 
-            <Label Text="Nombre (*): "/>
-            <Entry x:Name="nombreEntry" 
-       Text="{Binding Persona.Nombre}" />
+            <Label Text="Nombre (*): "
+                   TextColor="#fafafa"/>
+            <Entry x:Name="nombreEntry"
+                   TextColor="#fafafa"
+               PlaceholderColor="#e3953e"
+             Text="{Binding Persona.Nombre}" />
 
-            <Label Text="Apellidos (*): "/>
-            <Entry x:Name="apellidosEntry" 
-       Placeholder="Apellidos"               
-       Text="{Binding Persona.Apellidos}" />
+            <Label Text="Apellidos (*):"
+                   TextColor="#fafafa"/>
+            <Entry x:Name="apellidosEntry"
+               PlaceholderColor="#e3953e"
+                   TextColor="#fafafa"
+            Placeholder="Apellidos"               
+            Text="{Binding Persona.Apellidos}" />
 
-            <Label Text="DNI/NIE (*): "/>
-            <Entry x:Name="dniEntry" 
-       Placeholder="DNI"               
-       Text="{Binding Persona.DNI}" />
-            <Label Text="Centro (*):"/>
-            <Picker SelectedIndex="{Binding Persona.CentroEstudio}">
+            <Label Text="DNI/NIE (*): " TextColor="#fafafa"/>
+            <Entry x:Name="dniEntry" PlaceholderColor="#e3953e" TextColor="#fafafa" 
+            Placeholder="DNI"               
+            Text="{Binding Persona.DNI}" />
+            <Label Text="Centro (*): " TextColor="#fafafa"/>
+            <Picker SelectedItem="{Binding Persona.CentroEstudio}" TextColor="#fafafa" TitleColor="#fafafa" >
                 <Picker.Items>
                     <x:String>I.E.S Saladillo</x:String>
                     <x:String>I.E.S Kursaal</x:String>
@@ -59,8 +72,8 @@
                 </Picker.Items>
             </Picker>
 
-            <Label Text="Tipo de grado (*):"/>
-            <Picker SelectedIndex="{Binding Persona.TipoGrado}">
+            <Label Text="Tipo de grado (*): " TextColor="#fafafa"/>
+            <Picker SelectedItem="{Binding Persona.TipoGrado}" TextColor="#fafafa" TitleColor="#fafafa"> 
                 <Picker.Items>
                     <x:String>CFGB</x:String>
                     <x:String>CFGM</x:String>
@@ -68,30 +81,30 @@
                 </Picker.Items>
             </Picker>
 
-            <Label Text="Nombre del grado cursado (*):"/>
-            <Entry x:Name="gradoEntry" 
-                Placeholder="Desarrollo de Aplicaciones Multiplataformas." 
-                Text="{Binding Persona.NombreGrado}" />
+            <Label Text="Nombre del grado cursado (*):" TextColor="#fafafa"/>
+            <Entry x:Name="gradoEntry" PlaceholderColor="#e3953e" TextColor="#fafafa"
+            Placeholder="Desarrollo de Aplicaciones Multiplataformas." 
+            Text="{Binding Persona.NombreGrado}" />
 
-            <Label Text="Usuario del tutor educativo (*):"/>
+            <Label Text="Tutor del centro educativo (*):" TextColor="#fafafa"/>
 
-            <Entry x:Name="profesorEntry" 
-                 Placeholder="espermac083" 
-                 Text="{Binding Persona.ProfesorTutor}" />
+            <Entry x:Name="profesorEntry" PlaceholderColor="#e3953e" TextColor="#fafafa"
+             Placeholder="Amadeo Morales" 
+             Text="{Binding Persona.ProfesorTutor}" />
 
-            <Label Text="Centro de trabajo (*):"/>
+            <Label Text="Centro de trabajo (*):" TextColor="#fafafa"/>
 
-            <Entry x:Name="centroTrabajoEntry" 
-                 Placeholder="Inserte el nombre de la empresa." 
-                 Text="{Binding Persona.CentroTrabajo}" />
+            <Entry x:Name="centroTrabajoEntry" PlaceholderColor="#e3953e" TextColor="#fafafa"
+             Placeholder="Inserte el nombre de la empresa." 
+             Text="{Binding Persona.CentroTrabajo}" />
 
-            <Label Text="Tutor laboral (*):"/>
+            <Label Text="Tutor laboral (*):" TextColor="#fafafa"/>
 
-            <Entry x:Name="tutorEntry" 
-                 Placeholder="David Perez" 
-                 Text="{Binding Persona.TutorLaboral}" />
+            <Entry x:Name="tutorEntry" PlaceholderColor="#e3953e" TextColor="#fafafa"
+             Placeholder="David Perez" 
+             Text="{Binding Persona.TutorLaboral}" />
 
-            <Button Text="Registrarse" Clicked="OnRegisterClicked" />
+            <Button Text="Registrarse" BackgroundColor="#fea643" TextColor="#fafafa" Clicked="OnRegisterClicked" />
     </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

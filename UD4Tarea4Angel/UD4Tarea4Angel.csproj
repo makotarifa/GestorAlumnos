@@ -50,6 +50,7 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\Fonts\Lexend.ttf" />
+	  <None Remove="Resources\Images\dotnet_bot.png" />
 	  <None Remove="Resources\Raw\PlantillaPDF.pdf" />
 	</ItemGroup>
 
@@ -62,12 +63,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="MVVM\Views\EditarInfoProfesorView.xaml.cs">
+	    <DependentUpon>EditarInfoProfesorView.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="MVVM\Views\RegistroView.xaml.cs">
 	    <DependentUpon>RegistroView.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="MVVM\Views\EditarInfoProfesorView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="MVVM\Views\EditarInfoAlumnoView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

@@ -2,6 +2,7 @@ using Firebase.Database;
 using System.Collections.ObjectModel;
 using UD4Tarea4Angel.Models;
 using UD4Tarea4Angel.MVVM.ViewModels;
+using UD4Tarea4Angel.Utilities;
 
 namespace UD4Tarea4Angel.MVVM.Views;
 
@@ -9,7 +10,6 @@ public partial class SelectorAlumnosView : ContentPage
 {
 	string currentUsername;
     SelectorAlumnosViewModel SAVM = new SelectorAlumnosViewModel();
-    FirebaseClient firebaseClient = new FirebaseClient("https://fir-angel-1c1f8-default-rtdb.europe-west1.firebasedatabase.app/");
     public SelectorAlumnosView(string currentUsername)
 	{
 		InitializeComponent();
@@ -32,7 +32,7 @@ public partial class SelectorAlumnosView : ContentPage
 
     private async Task<ObservableCollection<Persona>> GetAllPersonasFromProfesor(string dayKey)
     {
-        var activities = await firebaseClient
+        var activities = await FirebaseConnection.firebaseClient
             .Child("DatosPersona")
             .OnceAsync<Persona>();
 
@@ -41,7 +41,7 @@ public partial class SelectorAlumnosView : ContentPage
             .Where(activitySnapshot => activitySnapshot.Object.ProfesorTutor == currentUsername)
             .Select(activitySnapshot => activitySnapshot.Object)
             .ToList();
- 
+
 
         // Convertir a ObservableCollection
         return new ObservableCollection<Persona>(alumnosLista);

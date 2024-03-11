@@ -3,13 +3,13 @@ using Firebase.Database.Query;
 using System.Collections.ObjectModel;
 using UD4Tarea4Angel.MVVM.Models;
 using UD4Tarea4Angel.MVVM.ViewModels;
+using UD4Tarea4Angel.Utilities;
 
 namespace UD4Tarea4Angel.MVVM.Views;
 
 public partial class SelectorDiasView : ContentPage
 {
     SelectorDiaViewModel SDVM = new SelectorDiaViewModel();
-    FirebaseClient firebaseClient = new FirebaseClient("https://fir-angel-1c1f8-default-rtdb.europe-west1.firebasedatabase.app/");
     string currentUsername;
     public SelectorDiasView(string userName)
 	{
@@ -51,7 +51,7 @@ public partial class SelectorDiasView : ContentPage
     }
     private async Task<ObservableCollection<Actividad>> GetAllActivitiesFromDay(string dayKey)
     {
-        var activities = await firebaseClient
+        var activities = await FirebaseConnection.firebaseClient
             .Child("Actividades")
             .OnceAsync<Actividad>();
 
@@ -68,7 +68,7 @@ public partial class SelectorDiasView : ContentPage
     private async Task<bool> CheckIfDayExistsOnDatabase(DateTime fecha, string userName)
     {
         // Realizar una consulta para verificar si el dia ya existe o no
-        var users = await firebaseClient.Child("Days").OnceAsync<Dia>();
+        var users = await FirebaseConnection.firebaseClient.Child("Days").OnceAsync<Dia>();
 
         // Devuelve si existe algun objeto
         return users.Any(u => u.Object.UserName == userName && u.Object.Fecha == fecha);
@@ -78,7 +78,7 @@ public partial class SelectorDiasView : ContentPage
     private async Task<Dia> GetDayFromDatabase(DateTime fecha, string userName)
     {
         // Realizar una consulta para verificar si el dia ya existe
-        var days = await firebaseClient.Child("Days").OnceAsync<Dia>();
+        var days = await FirebaseConnection.firebaseClient.Child("Days").OnceAsync<Dia>();
 
         // Buscar el día en la lista
         var dia = days.FirstOrDefault(d => d.Object.UserName == userName && d.Object.Fecha == fecha);
@@ -90,7 +90,7 @@ public partial class SelectorDiasView : ContentPage
     public async Task<bool> ActivityExistOnDay(String key, String dayKey)
     {
         // Realizar una consulta para verificar so la actividad ya existe
-        var activities = await firebaseClient.Child("Actividades").OnceAsync<Actividad>();
+        var activities = await FirebaseConnection.firebaseClient.Child("Actividades").OnceAsync<Actividad>();
 
         // Buscar el día en la lista
         return activities.Any(d => d.Object.Key == key && d.Object.DiaKey == dayKey);
@@ -101,7 +101,7 @@ public partial class SelectorDiasView : ContentPage
     public async Task<Actividad> GetActivity(String key, String dayKey)
     {
         // Realizar una consulta para verificar so la actividad ya existe
-        var activities = await firebaseClient.Child("Actividades").OnceAsync<Actividad>();
+        var activities = await FirebaseConnection.firebaseClient.Child("Actividades").OnceAsync<Actividad>();
 
         // Buscar el día en la lista
         var activity = activities.FirstOrDefault(d => d.Object.Key == key && d.Object.DiaKey == dayKey);
@@ -142,12 +142,12 @@ public partial class SelectorDiasView : ContentPage
 
                     //Tener en cuenta que obtiene el objeto por la ActividadRealizada.
                     //Se borra el antiguo objeto Actividad con el mismo nombre.
-                    await firebaseClient
+                    await FirebaseConnection.firebaseClient
                         .Child("Actividades")
                         .Child(SDVM.ActividadActual.Key) 
                         .DeleteAsync();
 
-                    await firebaseClient
+                    await FirebaseConnection.firebaseClient
                         .Child("Actividades").Child(SDVM.ActividadActual.Key)
                         .PutAsync(SDVM.ActividadActual);
 
@@ -155,7 +155,7 @@ public partial class SelectorDiasView : ContentPage
 
                 } else
                 {
-                    await firebaseClient
+                    await FirebaseConnection.firebaseClient
                         .Child("Actividades").Child(SDVM.ActividadActual.Key)
                         .PutAsync(SDVM.ActividadActual);
 
@@ -172,9 +172,9 @@ public partial class SelectorDiasView : ContentPage
             {
                 // Si la actividad no existe, agregar como nuevo Dia y nueva Activity
 
-                await firebaseClient.Child("Days").Child(SDVM.Dia.Key).PutAsync(SDVM.Dia);
+                await FirebaseConnection.firebaseClient.Child("Days").Child(SDVM.Dia.Key).PutAsync(SDVM.Dia);
 
-                await firebaseClient
+                await FirebaseConnection.firebaseClient
                     .Child("Actividades").Child(SDVM.ActividadActual.Key)
                     .PutAsync(SDVM.ActividadActual);
 

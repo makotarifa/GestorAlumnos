@@ -2,13 +2,14 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="UD4Tarea4Angel.MVVM.Views.InicioSesionView"
-             Title="InicioSesionView"
+             Title=""
              BackgroundColor="#008193">
     
     <VerticalStackLayout Padding="50"
                          Spacing="20">
         <Label Text="FORMACIÓN EN CENTROS DE TRABAJO."
                FontSize="Medium"
+               TextColor="#fafafa"
                Padding="0, 20"
                VerticalOptions="CenterAndExpand" 
                HorizontalOptions="CenterAndExpand" />
@@ -18,32 +19,35 @@
             
             <Label Text="Iniciar sesión."
                FontSize="Small"
+               TextColor="#fafafa"
                VerticalOptions="CenterAndExpand" 
                HorizontalOptions="StartAndExpand" />
 
             <Entry x:Name="usernameEntry" 
-               Placeholder="Usuario"               
+               Placeholder="Usuario"     
+               TextColor="#fafafa"
                Text="{Binding UserItem.UserName}" 
                PlaceholderColor="#e3953e"/>
 
             <Entry x:Name="passwordEntry" 
                Placeholder="Contraseña" 
                IsPassword="True" 
+               TextColor="#fafafa"
                PlaceholderColor="#e3953e"
                Text="{Binding UserItem.Password}" />
 
             <HorizontalStackLayout
                 Spacing="20">
-                <Label Text="Modo Alumno" x:Name="lblModo"
+                <Label Text="Modo Alumno" TextColor="#fafafa" x:Name="lblModo"
                FontSize="Small"
                VerticalOptions="CenterAndExpand" 
                HorizontalOptions="StartAndExpand" />
-                <Switch x:Name="notificationSwitch" Toggled="OnSwitchToggled"/>
+                <Switch x:Name="notificationSwitch" Toggled="OnSwitchToggled" ThumbColor="#e3953e"/>
             </HorizontalStackLayout>
 
         </VerticalStackLayout>
 
-        <Button Text="Iniciar Sesion" Clicked="OnLoginClicked" HorizontalOptions="Center" BackgroundColor="#fea643" TextColor="#f3f9fa" Margin="0, 0"/>
-        <Button Text="Registrarse" FontSize="12" Padding="10, 5" Margin="0, 10" BackgroundColor="#fea643" TextColor="#f3f9fa" Clicked="OnRegisterClicked" HorizontalOptions="Center"/>
+        <Button Text="Iniciar Sesion" Clicked="OnLoginClicked" HorizontalOptions="Center" BackgroundColor="#fea643" TextColor="#fafafa" Margin="0, 0"/>
+        <Button Text="Registrarse" FontSize="12" Padding="10, 5" Margin="0, 10" BackgroundColor="#fea643" TextColor="#fafafa" Clicked="OnRegisterClicked" HorizontalOptions="Center"/>
     </VerticalStackLayout>
 </ContentPage>

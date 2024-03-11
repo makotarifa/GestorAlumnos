@@ -22,6 +22,6 @@ public partial class MenuPrincipalProfesor : ContentPage
     private async void OnGestionarClicked(object sender, EventArgs e)
     {
 
-        await Navigation.PushAsync(new EditarInfoAlumnoView(currentUsername));
+        await Navigation.PushAsync(new EditarInfoProfesorView(currentUsername));
     }
 }

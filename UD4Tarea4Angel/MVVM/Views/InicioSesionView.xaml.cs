@@ -10,7 +10,6 @@ public partial class InicioSesionView : ContentPage
 {
     UserViewModel uVM = new UserViewModel();
     bool modoProfesor = false;
-    FirebaseClient firebaseClient = new FirebaseClient("https://fir-angel-1c1f8-default-rtdb.europe-west1.firebasedatabase.app/");
     public InicioSesionView()
 	{
         InitializeComponent();
@@ -84,11 +83,11 @@ public partial class InicioSesionView : ContentPage
     {
         // Realizar una consulta para verificar si el usuario ya existe
 
-        var users = await firebaseClient.Child("ProfesorUsers").OnceAsync<UserItem>();
+        var users = await FirebaseConnection.firebaseClient.Child("ProfesorUsers").OnceAsync<UserItem>();
 
         if (!modoProfesor)
         {
-            users = await firebaseClient.Child("AlumnoUsers").OnceAsync<UserItem>();
+            users = await FirebaseConnection.firebaseClient.Child("AlumnoUsers").OnceAsync<UserItem>();
         } 
 
         // Devuelve si existe algun objeto

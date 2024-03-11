@@ -2,29 +2,33 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="UD4Tarea4Angel.MVVM.Views.VerDiaView"
-             Title="VerDiaView">
-    <VerticalStackLayout>
-        <Label 
+             Title=""
+             BackgroundColor="#008193">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+            <Label 
+            TextColor="#fafafa"
             x:Name="cabeceraDia"
             Text="Dia con fecha: "
             FontSize="Medium"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
-        
-        <ListView x:Name="actividadesListView" ItemsSource="{Binding Actividades}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <VerticalStackLayout>
-                            <Label Text="{Binding ActividadDesarrollada}" />
-                            <Label Text="{Binding TiempoEmpleado, StringFormat='Tiempo: {0} horas'}" />
-                            <Label Text="{Binding Observaciones, StringFormat='Observaciones: {0}'}" />
-                        </VerticalStackLayout>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </VerticalStackLayout>
+
+            <ListView x:Name="actividadesListView" ItemsSource="{Binding Actividades}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <VerticalStackLayout Padding="20">
+                                <Label Text="{Binding ActividadDesarrollada}" TextColor="#fafafa"/>
+                                <Label Text="{Binding TiempoEmpleado, StringFormat='Tiempo: {0} horas'}" TextColor="#fafafa"/>
+                                <Label Text="{Binding Observaciones, StringFormat='Observaciones: {0}'}" TextColor="#fafafa"/>
+                            </VerticalStackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </VerticalStackLayout>
+    </ScrollView>
 
 
 </ContentPage>

@@ -9,7 +9,6 @@ namespace UD4Tarea4Angel.MVVM.Views;
 public partial class RegistroView : ContentPage
 {
     RegisterUserViewModel RUVM = new RegisterUserViewModel();
-    FirebaseClient firebaseClient = new FirebaseClient("https://fir-angel-1c1f8-default-rtdb.europe-west1.firebasedatabase.app/");
     public RegistroView()
 	{
         InitializeComponent();
@@ -41,7 +40,7 @@ public partial class RegistroView : ContentPage
                 if (profesorExists) {
                     if (!userExists)
                     {  // Agregar el nuevo usuario si no existe
-                        await firebaseClient.Child("AlumnoUsers").PostAsync(new UserItem
+                        await FirebaseConnection.firebaseClient.Child("AlumnoUsers").PostAsync(new UserItem
                         {
                             UserName = RUVM.UserItem.UserName,
                             Password = Encript.GetSHA256(RUVM.UserItem.Password),
@@ -49,7 +48,7 @@ public partial class RegistroView : ContentPage
                         });
 
                         RUVM.Persona.UserName = RUVM.UserItem.UserName;
-                        await firebaseClient.Child("DatosPersona").Child(RUVM.Persona.Key).PutAsync(RUVM.Persona);
+                        await FirebaseConnection.firebaseClient.Child("DatosPersona").Child(RUVM.Persona.Key).PutAsync(RUVM.Persona);
 
 
                         await this.DisplayAlert("Confirmacion", "Usuario creado con exito.", "Vale");
@@ -80,7 +79,7 @@ public partial class RegistroView : ContentPage
     private async Task<bool> CheckIfUserExists(string userName)
     {
         // Realizar una consulta para verificar si el usuario ya existe
-        var users = await firebaseClient.Child("AlumnoUsers").OnceAsync<UserItem>();
+        var users = await FirebaseConnection.firebaseClient.Child("AlumnoUsers").OnceAsync<UserItem>();
 
         // Devuelve si existe algun objeto
         return users.Any(u => u.Object.UserName == userName);
@@ -90,7 +89,7 @@ public partial class RegistroView : ContentPage
     private async Task<bool> CheckIfProfesorUserExists(string userName)
     {
         // Realizar una consulta para verificar si el usuario ya existe
-        var users = await firebaseClient.Child("ProfesorUsers").OnceAsync<UserItem>();
+        var users = await FirebaseConnection.firebaseClient.Child("ProfesorUsers").OnceAsync<UserItem>();
 
         // Devuelve si existe algun objeto
         return users.Any(u => u.Object.UserName == userName);

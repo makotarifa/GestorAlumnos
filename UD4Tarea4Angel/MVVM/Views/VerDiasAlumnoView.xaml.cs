@@ -3,13 +3,13 @@ using System.Collections.ObjectModel;
 using UD4Tarea4Angel.Models;
 using UD4Tarea4Angel.MVVM.Models;
 using UD4Tarea4Angel.MVVM.ViewModels;
+using UD4Tarea4Angel.Utilities;
 
 namespace UD4Tarea4Angel.MVVM.Views;
 
 public partial class VerDiasAlumnoView : ContentPage
 {
     VerDiasViewModel VDVM;
-    FirebaseClient firebaseClient = new FirebaseClient("https://fir-angel-1c1f8-default-rtdb.europe-west1.firebasedatabase.app/");
     public VerDiasAlumnoView(Persona persona)
 	{
 		InitializeComponent();
@@ -26,14 +26,14 @@ public partial class VerDiasAlumnoView : ContentPage
 
     private async Task<ObservableCollection<Dia>> GetAllDaysFromPersona()
     {
-        var dias = await firebaseClient
+        var dias = await FirebaseConnection.firebaseClient
             .Child("Days")
             .OnceAsync<Dia>();
 
         // Filtrar los dias que contengan el usuario de la persona actual
         List<Dia> diasLista = dias
             .Where(diaSnapshot => diaSnapshot.Object.UserName == VDVM.PersonaActual.UserName)
-            .Select(diaSnapshot => diaSnapshot.Object)
+            .Select(diaSnapshot => diaSnapshot.Object).OrderBy(dia => dia.Fecha)
             .ToList();
 
         // Convertir a ObservableCollection
@@ -50,6 +50,6 @@ public partial class VerDiasAlumnoView : ContentPage
     //Genera el PDF en base a los dias del alumno.
     private void OnGeneratePDFClicked(object sender, EventArgs e)
     {
-       
+        Navigation.PushAsync(new PDFView(VDVM.PersonaActual.UserName));
     }
 }
