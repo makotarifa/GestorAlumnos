@@ -7,8 +7,14 @@ using System.Threading.Tasks;
 
 namespace UD4Tarea4Angel.Utilities
 {
+    /// <summary>
+    /// Clase para encriptar en SHA256.
+    /// </summary>
     public class Encript
     {
+        /// <summary>
+        /// Método para encriptar en SHA256, se le pasa un string y devuelve otro string encriptado.
+        /// </summary>
         public static string GetSHA256(string input)
         {
             SHA256 sha256 = SHA256.Create();

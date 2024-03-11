@@ -13,6 +13,9 @@ using UD4Tarea4Angel.Utilities;
 
 namespace UD4Tarea4Angel.MVVM.Views;
 
+/// <summary>
+/// Clase para visualizar un PDF con los datos de un alumno que se generara a partir de los datos de Firebase.
+/// </summary>
 public partial class PDFView : ContentPage
 {
     String actualAlumnoUsername;
@@ -20,10 +23,15 @@ public partial class PDFView : ContentPage
     {
         InitializeComponent();
         actualAlumnoUsername = alumnoUsername;
+        // Se encarga de inicializar la vista con el PDF generado, de forma correcta segun la plataforma.
         ControlPDF();
+        // Se encarga de generar el PDF con los datos del alumno.
         GenerarPDF(actualAlumnoUsername);
     }
 
+    /// <summary>
+    /// Metodo para controlar el PDF segun la plataforma.
+    /// </summary>
     private void ControlPDF()
     {
 #if ANDROID
@@ -40,13 +48,22 @@ public partial class PDFView : ContentPage
 #endif
     }
 
+    /// <summary>
+    /// Metodo para generar el PDF con los datos del alumno. Se encarga de obtener los datos de Firebase y generar el PDF con iText.
+    /// </summary>
+    /// <param name="alumnoUsername"></param>
     private async void GenerarPDF(string alumnoUsername )
     {
+        // Se obtiene la persona actual.
         Persona personaActual = await GetPersona(alumnoUsername);
+        // Se obtiene el profesor tutor de la persona actual.
         Persona profesor = await GetProfesor(personaActual.ProfesorTutor);
+        // Se agrupan los días por semana con el método GroupDaysOnTheSameWeek.
         List<List<Dia>> diasAgrupadosPorSemana = await GroupDaysOnTheSameWeek(alumnoUsername);
+        // Se obtienen las actividades de la persona actual.
         List<Actividad> actividadesPersonaActual;
 
+        // Se genera el PDF con iText, que tendra este nombre.
         string fileName = "mauidotnet.pdf";
 
 #if ANDROID
@@ -59,17 +76,19 @@ public partial class PDFView : ContentPage
         {
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf);
+
+            //Se crean las tablas y celdas necesarias para el PDF.
             Table tablaSuperior;
             Table tablaInferior;
-
             iText.Layout.Element.Cell celdaActividad, celdaTiempo, celdaObservaciones;
 
-            //Cambiar la orientacion del documento
+            //Cambia la orientacion del documento
             pdf.SetDefaultPageSize(iText.Kernel.Geom.PageSize.A4.Rotate());
 
             //Bucle foreach por cada semana en diasAgrupadosPorSemana
             foreach (var semana in diasAgrupadosPorSemana)
             {
+                //Textos superiores
                 document.Add(new Paragraph("JUNTA DE ANDALUCIA                                                     CONSEJERIA DE EDUCACION")
                 .SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER)
                 .SetFontSize(13));
@@ -80,71 +99,88 @@ public partial class PDFView : ContentPage
 
                 //Se genera una tabla de 2 columnas y 3 filas.
                 tablaSuperior = new Table(new float[] { 1, 2 });
+                //Que ocupe el 100% del ancho
                 tablaSuperior.SetWidth(iText.Layout.Properties.UnitValue.CreatePercentValue(100));
 
+                //se agrega la celda de la fecha.
                 tablaSuperior.AddCell(new iText.Layout.Element.Cell(1, 1)
-                    .Add(new Paragraph($"Semana del {semana.LastOrDefault().Fecha.Day} de {semana.FirstOrDefault().Fecha.Month} al {semana.LastOrDefault().Fecha.Day} del {semana.LastOrDefault().Fecha.Month} del {semana.LastOrDefault().Fecha.Year}"))
+                    .Add(new Paragraph($"Semana del {semana.FirstOrDefault().Fecha.Day} del {semana.FirstOrDefault().Fecha.Month} al {semana.LastOrDefault().Fecha.Day} del {semana.LastOrDefault().Fecha.Month} del {semana.LastOrDefault().Fecha.Year}"))
                     .SetTextAlignment(iText.Layout.Properties.TextAlignment.LEFT)
                     .SetFontSize(11));
+
+                //Espacio en blanco
                 tablaSuperior.AddCell(new iText.Layout.Element.Cell(1, 1)
                 .Add(new Paragraph(""))
                 .SetTextAlignment(iText.Layout.Properties.TextAlignment.LEFT)
                 .SetFontSize(11));
 
+                //Se agrega la celdas del centro educativo y del profesor.
                 tablaSuperior.AddCell(new iText.Layout.Element.Cell(1, 1)
                 .Add(new Paragraph($"Centro docente: {personaActual.CentroEstudio} \n" +
                 $"Profesor/a responsable seguimiento: {profesor.Nombre} {profesor.Apellidos}"))
                 .SetTextAlignment(iText.Layout.Properties.TextAlignment.LEFT)
                 .SetFontSize(11));
 
+                //Se agrega la celda del centro de trabajo y del alumno.
                 tablaSuperior.AddCell(new iText.Layout.Element.Cell(1, 1)
                 .Add(new Paragraph($"Centro de trabajo colaborador:  {personaActual.CentroTrabajo} \n" +
                 $"Tutor/a centro de trabajo: {personaActual.TutorLaboral}"))
                 .SetTextAlignment(iText.Layout.Properties.TextAlignment.LEFT)
                 .SetFontSize(11));
 
+                //Se agrega la celda del nombre del alumno.
                 tablaSuperior.AddCell(new iText.Layout.Element.Cell(1, 1)
                 .Add(new Paragraph($"Alumno/a: {personaActual.Nombre} {personaActual.Apellidos}"))
                 .SetTextAlignment(iText.Layout.Properties.TextAlignment.LEFT)
                 .SetFontSize(11));
 
+                //Se agrega la celda del ciclo formativo y del grado.
                 tablaSuperior.AddCell(new iText.Layout.Element.Cell(1, 1)
                 .Add(new Paragraph($"Ciclo formativo: {personaActual.NombreGrado} Grado: {personaActual.TipoGrado}"))
                 .SetTextAlignment(iText.Layout.Properties.TextAlignment.LEFT)
                 .SetFontSize(11));
 
+                //Se agrega la tabla superior al documento.
                 document.Add(tablaSuperior);
 
                 //Agregar espaciado entre tabla superior e inferior
 
                 document.Add(new Paragraph("\n"));
 
-
+                //Tabla inferior con los datos de las actividades de la semana.
 
                 tablaInferior = new Table(new float[] { 1, 1, 1, 1 });
                 tablaInferior.SetWidth(iText.Layout.Properties.UnitValue.CreatePercentValue(100));
 
+                //Cabecear de la tabla inferior
                 tablaInferior.AddCell(new iText.Layout.Element.Cell(1, 1).Add(new Paragraph("DIA")).SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER).SetFontSize(11));
                 tablaInferior.AddCell(new iText.Layout.Element.Cell(1, 1).Add(new Paragraph("ACTIVIDAD DESARROLLADA/PUESTO INFORMATIVO")).SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER).SetFontSize(11));
                 tablaInferior.AddCell(new iText.Layout.Element.Cell(1, 1).Add(new Paragraph("TIEMPO EMPLEADO")).SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER).SetFontSize(11));
                 tablaInferior.AddCell(new iText.Layout.Element.Cell(1, 1).Add(new Paragraph("OBSERVACIONES")).SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER).SetFontSize(11));
 
-
+                //Bucle foreach por cada dia en semana
                 foreach (var dia in semana)
                 {
+                    //Se obtienen las actividades de la persona actual.
                     actividadesPersonaActual = await GetAllActivitiesFromDay(dia.Key);
 
+                    //Celdas de la tabla inferior que se rellenaran con los datos de las actividades.
                     celdaActividad = new iText.Layout.Element.Cell(1, 1);
                     celdaTiempo = new iText.Layout.Element.Cell(1, 1);
                     celdaObservaciones = new iText.Layout.Element.Cell(1, 1);
 
+                    //Se agrega la celda de la fecha.
                     tablaInferior.AddCell(new iText.Layout.Element.Cell(1, 1).Add(new Paragraph(dia.Fecha.Date.ToShortDateString())).SetTextAlignment(iText.Layout.Properties.TextAlignment.LEFT).SetFontSize(11));
+                    
+                    //Bucle foreach por cada actividad
                     foreach (var actividad in actividadesPersonaActual)
                     {
+                        //Se rellenan las celdas con los datos de las actividades.
                         celdaActividad.Add(new Paragraph(actividad.ActividadDesarrollada)).SetTextAlignment(iText.Layout.Properties.TextAlignment.LEFT).SetFontSize(11);
                         celdaTiempo.Add(new Paragraph(actividad.TiempoEmpleado.ToString())).SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER).SetFontSize(11);
                         celdaObservaciones.Add(new Paragraph(actividad.Observaciones)).SetTextAlignment(iText.Layout.Properties.TextAlignment.LEFT).SetFontSize(11);
 
+                        //Si hay mas de una actividad, se añade una linea separadora.
                         if (actividadesPersonaActual.Count > 1)
                         {
                             celdaActividad.Add(new LineSeparator(new SolidLine()));
@@ -153,11 +189,12 @@ public partial class PDFView : ContentPage
                         }
                     }
 
+                    //Se añaden las celdas a la tabla inferior.
                     tablaInferior.AddCell(celdaActividad);
                     tablaInferior.AddCell(celdaTiempo);
                     tablaInferior.AddCell(celdaObservaciones);
                 }
-
+                //Se añade la tabla inferior al documento.
                 document.Add(tablaInferior);
                 //Crear pagina nueva
                 document.Add(new AreaBreak());
@@ -194,6 +231,9 @@ public partial class PDFView : ContentPage
         return ms.ToArray();
     }
 
+    /// <summary>
+    /// Se obtiene el profesor tutor de la persona actual mediante su nombre de usuario.
+    /// </summary>
     private async Task<Persona> GetProfesor(string userName)
     {
         // Realizar una consulta para verificar si el usuario ya existe
@@ -206,6 +246,9 @@ public partial class PDFView : ContentPage
 
     }
 
+    /// <summary>
+    /// Se obtiene la persona actual mediante su nombre de usuario.
+    /// </summary>
     private async Task<List<Actividad>> GetAllActivitiesFromDay(string dayKey)
     {
         var activities = await FirebaseConnection.firebaseClient
@@ -221,6 +264,9 @@ public partial class PDFView : ContentPage
         return actividadesLista;
     }
 
+    /// <summary>
+    /// Se obtiene la persona actual mediante su nombre de usuario.
+    /// </summary>
     private async Task<Persona> GetPersona(string userName)
     {
         // Realizar una consulta para verificar si el usuario ya existe
@@ -232,7 +278,9 @@ public partial class PDFView : ContentPage
         return persona.Object;
 
     }
-
+    /// <summary>
+    /// Se agrupan los días que esten en la misma semana.
+    /// </summary>
     private async Task<List<List<Dia>>> GroupDaysOnTheSameWeek(string userName)
     {
         var dias = await FirebaseConnection.firebaseClient
@@ -247,6 +295,7 @@ public partial class PDFView : ContentPage
         // Agrupar los días por semana, teniendo en cuenta el día de la semana
         var diasAgrupados = diasLista.GroupBy(d =>
         {
+            //Esto es para que la semana empiece en lunes, ya no se ni de donde lo saque
             var weekOfYear = CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(d.Fecha, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
             if (d.Fecha.DayOfWeek == DayOfWeek.Monday)
             {

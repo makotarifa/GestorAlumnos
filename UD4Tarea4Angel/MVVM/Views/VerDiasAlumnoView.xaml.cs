@@ -7,6 +7,9 @@ using UD4Tarea4Angel.Utilities;
 
 namespace UD4Tarea4Angel.MVVM.Views;
 
+/// <summary>
+/// Clase que representa la vista de la visualización de los días de un alumno.
+/// </summary>
 public partial class VerDiasAlumnoView : ContentPage
 {
     VerDiasViewModel VDVM;
@@ -18,19 +21,29 @@ public partial class VerDiasAlumnoView : ContentPage
         InitializeAsync();
 	}
 
+    /// <summary>
+    /// Metodo que inicializa la vista con los datos de los días del alumno seleccionado en asincrono, tambien cambia la cabecera para que muestre el nombre del alumno.
+    /// </summary>
     private async void InitializeAsync()
     {
         alumnoCabecera.Text = alumnoCabecera.Text + " " + VDVM.PersonaActual.Nombre +" "+ VDVM.PersonaActual.Apellidos;
         VDVM.Dias = await GetAllDaysFromPersona();
     }
 
+
+    /// <summary>
+    /// Obtiene todos los días de la persona que se trabaja en el ViewModel.
+    /// </summary>
+    /// <returns>
+    /// Una ObservableCollection de días de la persona.
+    /// </returns>
     private async Task<ObservableCollection<Dia>> GetAllDaysFromPersona()
     {
         var dias = await FirebaseConnection.firebaseClient
             .Child("Days")
             .OnceAsync<Dia>();
 
-        // Filtrar los dias que contengan el usuario de la persona actual
+        // Filtra los dias que contengan el usuario de la persona actual
         List<Dia> diasLista = dias
             .Where(diaSnapshot => diaSnapshot.Object.UserName == VDVM.PersonaActual.UserName)
             .Select(diaSnapshot => diaSnapshot.Object).OrderBy(dia => dia.Fecha)
@@ -40,6 +53,11 @@ public partial class VerDiasAlumnoView : ContentPage
         return new ObservableCollection<Dia>(diasLista);
     }
 
+    /// <summary>
+    /// Metodo que se ejecuta cuando se pulsa un día de la lista. Se encarga de abrir la vista de VerDiaView con el día seleccionado.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void OnDiaTapped(object sender, ItemTappedEventArgs e)
     {
         Dia diaSeleccionado = (Dia)e.Item;
@@ -47,9 +65,12 @@ public partial class VerDiasAlumnoView : ContentPage
        Navigation.PushAsync(new VerDiaView(diaSeleccionado));
     }
 
-    //Genera el PDF en base a los dias del alumno.
+    /// <summary>
+    ///  Evento que se ejecuta cuando se pulsa el botón de generar PDF.
+    /// </summary>
     private void OnGeneratePDFClicked(object sender, EventArgs e)
     {
+        //Se va a la view que genera el PDF en base a los dias del alumno.
         Navigation.PushAsync(new PDFView(VDVM.PersonaActual.UserName));
     }
 }

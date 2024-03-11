@@ -9,13 +9,23 @@ using UD4Tarea4Angel.Models;
 
 namespace UD4Tarea4Angel.MVVM.ViewModels
 {
+    /// <summary>
+    /// Clase que representa el ViewModel para la selección de alumnos.
+    /// </summary>
     [AddINotifyPropertyChangedInterface]
     public class SelectorAlumnosViewModel
     {
+        /// <summary>
+        /// Colección de alumnos que se pueden seleccionar en la interfaz.
+        /// </summary>
         public ObservableCollection<Persona> AlumnosCollection { get; set; }
-
+        
+        /// <summary>
+        /// Constructor de la clase SelectorAlumnosViewModel.
+        /// </summary>
         public SelectorAlumnosViewModel()
         {
+            //Se inicializa la colección de alumnos.
             AlumnosCollection = new ObservableCollection<Persona>();
         }
     }

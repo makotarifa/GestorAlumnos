@@ -23,10 +23,10 @@
                VerticalOptions="CenterAndExpand" 
                HorizontalOptions="StartAndExpand" />
 
-            <Entry x:Name="usernameEntry" 
-               Placeholder="Usuario"     
+            <Entry x:Name="correoEntry" 
+               Placeholder="Correo"     
                TextColor="#fafafa"
-               Text="{Binding UserItem.UserName}" 
+               Text="{Binding UserItem.Email}" 
                PlaceholderColor="#e3953e"/>
 
             <Entry x:Name="passwordEntry" 

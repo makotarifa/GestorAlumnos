@@ -63,10 +63,10 @@
             Placeholder="Desarrollo de Aplicaciones Multiplataformas." 
             Text="{Binding Persona.NombreGrado}" />
 
-            <Label Text="Tutor del centro educativo (*):"/>
+            <Label Text="Usuario del tutor del centro educativo (*):"/>
 
             <Entry x:Name="profesorEntry" PlaceholderColor="#e3953e" TextColor="#fafafa"
-             Placeholder="Amadeo Morales" 
+             Placeholder="Ejemplo: amorpac023" 
              Text="{Binding Persona.ProfesorTutor}" />
 
             <Label Text="Centro de trabajo (*):" TextColor="#fafafa"/>

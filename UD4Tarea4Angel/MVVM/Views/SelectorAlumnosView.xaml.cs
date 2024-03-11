@@ -6,6 +6,9 @@ using UD4Tarea4Angel.Utilities;
 
 namespace UD4Tarea4Angel.MVVM.Views;
 
+/// <summary>
+/// Clase que representa la vista de selección de alumnos en la interfaz del profesor.
+/// </summary>
 public partial class SelectorAlumnosView : ContentPage
 {
 	string currentUsername;
@@ -18,11 +21,16 @@ public partial class SelectorAlumnosView : ContentPage
         InitializeAsync();
 	}
 
+    /// <summary>
+    /// Se inicializa la vista con los datos de los alumnos del profesor actual en asincrono.
+    /// </summary>
     private async void InitializeAsync()
     {
         SAVM.AlumnosCollection = await GetAllPersonasFromProfesor(currentUsername);
     }
-
+    /// <summary>
+    /// Al pulsar un alumno de la lista, se abre la vista de VerDiasAlumnoView con el alumno seleccionado.
+    /// </summary>
     private void OnAlumnoTapped(object sender, ItemTappedEventArgs e)
     {
         Persona personaSeleccionada = (Persona)e.Item;
@@ -30,6 +38,9 @@ public partial class SelectorAlumnosView : ContentPage
         Navigation.PushAsync(new VerDiasAlumnoView(personaSeleccionada));
     }
 
+    /// <summary>
+    /// Obtiene todas las personas que tienen el usuario del profesor actual.
+    /// </summary>
     private async Task<ObservableCollection<Persona>> GetAllPersonasFromProfesor(string dayKey)
     {
         var activities = await FirebaseConnection.firebaseClient

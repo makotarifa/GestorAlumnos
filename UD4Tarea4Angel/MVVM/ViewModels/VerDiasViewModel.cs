@@ -11,13 +11,30 @@ using UD4Tarea4Angel.MVVM.Models;
 
 namespace UD4Tarea4Angel.MVVM.ViewModels
 {
+    /// <summary>
+    /// Clase que representa el ViewModel para la visualización de los días de un alumno.
+    /// </summary>
     [AddINotifyPropertyChangedInterface]
+
     public class VerDiasViewModel
     {
+        /// <summary>
+        /// Persona actual seleccionada en la interfaz en la View de VerDias.
+        /// </summary>
         public Persona PersonaActual { get; set; }
+
+        /// <summary>
+        /// Lista de días de la persona actual.
+        /// </summary>
 
         public ObservableCollection<Dia> Dias { get; set; }
 
+        /// <summary>
+        /// Constructor de la clase VerDiasViewModel.
+        /// </summary>
+        /// <param name="persona">
+        /// La persona para la que se van a visualizar los días.
+        /// </param>
         public VerDiasViewModel(Persona persona)
         {
             Dias = new ObservableCollection<Dia>();

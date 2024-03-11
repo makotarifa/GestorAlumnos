@@ -32,6 +32,7 @@ public partial class SelectorDiasView : ContentPage
         {
             SDVM.Dia = await GetDayFromDatabase(SDVM.Dia.Fecha, currentUsername);
             SDVM.Actividades = await GetAllActivitiesFromDay(SDVM.Dia.Key);
+            AgregarEditarBotton.Text = "Editar";
 
         }
         else
@@ -43,12 +44,18 @@ public partial class SelectorDiasView : ContentPage
 
             SDVM.Actividades = new ObservableCollection<Actividad>();
             SDVM.ActividadActual = new Actividad();
+            AgregarEditarBotton.Text = "Agregar";
 
         }
 
+        // Se actualiza la actividad actual con el key del dia seleccionado.
         SDVM.ActividadActual.DiaKey = SDVM.Dia.Key;
 
     }
+
+    /// <summary>
+    /// Metdoon que obtiene todas las actividades de un día.
+    /// </summary>
     private async Task<ObservableCollection<Actividad>> GetAllActivitiesFromDay(string dayKey)
     {
         var activities = await FirebaseConnection.firebaseClient
@@ -61,10 +68,13 @@ public partial class SelectorDiasView : ContentPage
             .Select(activitySnapshot => activitySnapshot.Object)
             .ToList();
 
-        // Convertir a ObservableCollection
+        // Se convierte a ObservableCollection la lista de actividades anterior.
         return new ObservableCollection<Actividad>(actividadesLista);
     }
 
+    /// <summary>
+    /// Metodo que comprueba si el día ya existe en la base de datos mediante la fecha y el nombre de usuario.
+    /// </summary>
     private async Task<bool> CheckIfDayExistsOnDatabase(DateTime fecha, string userName)
     {
         // Realizar una consulta para verificar si el dia ya existe o no
@@ -75,6 +85,9 @@ public partial class SelectorDiasView : ContentPage
 
     }
 
+    /// <summary>
+    /// Obtiene el día de la base de datos mediante la fecha y el nombre de usuario.
+    /// </summary>
     private async Task<Dia> GetDayFromDatabase(DateTime fecha, string userName)
     {
         // Realizar una consulta para verificar si el dia ya existe
@@ -87,6 +100,16 @@ public partial class SelectorDiasView : ContentPage
         return dia.Object;
     }
 
+    /// <summary>
+    /// Metodo que comprueba si la actividad ya existe en ese dia
+    /// </summary>
+    /// <param name="key"> 
+    /// Key del objeto actividad
+    /// </param>
+    /// <param name="dayKey">
+    /// Key del objeto dia
+    /// </param>
+    /// <returns></returns>
     public async Task<bool> ActivityExistOnDay(String key, String dayKey)
     {
         // Realizar una consulta para verificar so la actividad ya existe
@@ -98,6 +121,18 @@ public partial class SelectorDiasView : ContentPage
 
     }
 
+    /// <summary>
+    /// Metodo que obtiene la información de la actividad que se va a editar.
+    /// </summary>
+    /// <param name="key">
+    /// El identificador único de la actividad que se va a buscar.
+    /// </param>
+    /// <param name="dayKey">
+    /// El identificador único del día al que pertenece la actividad.
+    /// </param>
+    /// <returns>
+    /// La actividad que se busca.
+    /// </returns>
     public async Task<Actividad> GetActivity(String key, String dayKey)
     {
         // Realizar una consulta para verificar so la actividad ya existe
@@ -111,6 +146,9 @@ public partial class SelectorDiasView : ContentPage
 
     }
 
+    /// <summary>
+    /// Evento que se ejecuta cuando se pulsa el botón de agregar o editar actividad.
+    /// </summary>
     private async void OnAgregarClicked(object sender, EventArgs e)
     {
         var fecha = SDVM.Dia.Fecha;
@@ -138,8 +176,6 @@ public partial class SelectorDiasView : ContentPage
 
                 if (await ActivityExistOnDay(SDVM.ActividadActual.Key, SDVM.ActividadActual.DiaKey))
                 {
-                    await this.DisplayAlert("Confirmacion", "Entro aqui.", "Vale");
-
                     //Tener en cuenta que obtiene el objeto por la ActividadRealizada.
                     //Se borra el antiguo objeto Actividad con el mismo nombre.
                     await FirebaseConnection.firebaseClient
@@ -183,7 +219,11 @@ public partial class SelectorDiasView : ContentPage
                 AgregarEditarBotton.Text = "Editar";
             }
 
+           //Se actualiza la lista de actividades.
+
             SDVM.Actividades = await GetAllActivitiesFromDay(SDVM.Dia.Key);
+
+            // Se limpian los campos de la actividad actual y se crea una nueva actividad.
 
             SDVM.ActividadActual = new Actividad
             {
@@ -198,6 +238,10 @@ public partial class SelectorDiasView : ContentPage
         }
 
     }
+
+    /// <summary>
+    /// Si se pulsa una actividad de la lista, se guarda en el ViewModel la actividad seleccionada.
+    /// </summary>
 
     private void OnActividadTapped (object sender, ItemTappedEventArgs e)
     {

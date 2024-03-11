@@ -7,33 +7,71 @@ using System.Threading.Tasks;
 
 namespace UD4Tarea4Angel.Models
 {
+    /// <summary>
+    /// Clase que representa una persona que puede ser un alumno o un profesor.
+    /// </summary>
     public class Persona : ISerializable
     {
+        /// <summary>
+        /// Identificador único de la persona.
+        /// </summary>
         public string Key { get; set; }
+        /// <summary>
+        /// Nombre de la persona.
+        /// </summary>
         public string Nombre {  get; set; }
+        /// <summary>
+        /// Apellidos de la persona.
+        /// </summary>
         public string Apellidos { get; set; }
-
+        /// <summary>
+        /// Numero de identificación de la persona.
+        /// </summary>
         public string DNI { get; set; }
+        /// <summary>
+        /// Centro de estudio de la persona.
+        /// </summary>
         public string CentroEstudio { get; set; }
-
+        /// <summary>
+        /// Profesor tutor de la persona.
+        /// </summary>
         public string ProfesorTutor { get; set; }
 
+        /// <summary>
+        /// Nombre del grado que cursa el alumno.
+        /// </summary>
         public string NombreGrado { get; set; }
-
+        /// <summary>
+        /// Tipo de grado que cursa el alumno.
+        /// </summary>
         public string TipoGrado { get; set; }
 
-
+        /// <summary>
+        /// Centro de trabajo del alumno que va a realizar las prácticas.
+        /// </summary>
         public string CentroTrabajo { get; set; }
 
-
+        /// <summary>
+        /// Tutor laboral del alumno que va a realizar las prácticas.
+        /// </summary>
         public string TutorLaboral { get; set; }
 
+        /// <summary>
+        /// Nombre de usuario de la persona asociada.
+        /// </summary>
         public string UserName { get; set; }
 
+        /// <summary>
+        /// Constructor de la clase Persona.
+        /// </summary>
         public Persona() {
+            //Se genera un identificador único para la persona.
             Key = Guid.NewGuid().ToString();
         }
 
+        /// <summary>
+        /// Implementación de la interfaz ISerializable para serializar los datos.
+        /// </summary>
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue("Key", Key);

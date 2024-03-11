@@ -6,6 +6,9 @@ using UD4Tarea4Angel.Utilities;
 
 namespace UD4Tarea4Angel.MVVM.Views;
 
+/// <summary>
+/// Clase que representa la vista de la interfaz para la visualización de un día.
+/// </summary>
 public partial class VerDiaView : ContentPage
 {
 	SelectorDiaViewModel SDVM = new SelectorDiaViewModel();
@@ -17,20 +20,33 @@ public partial class VerDiaView : ContentPage
         InitializationAsync();
     }
 
+    /// <summary>
+    /// Metodo que inicializa la vista con los datos del día seleccionado en asincrono.
+    /// </summary>
     private async void InitializationAsync()
     {
+        // Se actualiza la cabecera con la fecha del día con el formato corto del Datetime.
         cabeceraDia.Text = cabeceraDia.Text + " " + SDVM.Dia.Fecha.ToShortDateString();
 
+        // Se obtienen las actividades del día seleccionado.
         SDVM.Actividades = await GetAllActivitiesFromDay(SDVM.Dia.Key);
     }
 
+    /// <summary>
+    /// Metodo que obtiene todas las actividades de un día.
+    /// </summary>
+    /// <param name="dayKey">
+    ///  El identificador único del día que se va a buscar.
+    /// </param>
+    /// <returns></returns>
     private async Task<ObservableCollection<Actividad>> GetAllActivitiesFromDay(string dayKey)
     {
+        //Obtiene la lista de actividades de la base de datos del child "Actividades".
         var activities = await FirebaseConnection.firebaseClient
             .Child("Actividades")
             .OnceAsync<Actividad>();
 
-        // Filtrar las actividades por DiaKey
+        // Filtra las actividades por DiaKey
         List<Actividad> actividadesLista = activities
             .Where(activitySnapshot => activitySnapshot.Object.DiaKey == dayKey)
             .Select(activitySnapshot => activitySnapshot.Object)

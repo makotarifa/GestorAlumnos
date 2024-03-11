@@ -8,18 +8,36 @@ using System.Threading.Tasks;
 
 namespace UD4Tarea4Angel.MVVM.Models
 {
+    /// <summary>
+    /// Clase que representa un día en el que se han desarrollado actividades.
+    /// </summary>
     public class Dia : ISerializable
     {
+        /// <summary>
+        /// Identificador único del día.
+        /// </summary>
         public string Key { get; set; }
+        /// <summary>
+        /// Fecha del día.
+        /// </summary>
         public DateTime Fecha { get; set; }
+        /// <summary>
+        /// Usuario identificativo del día.
+        /// </summary>
         public string UserName { get; set; }
 
+        /// <summary>
+        /// Constructor de la clase Dia.
+        /// </summary>
         public Dia()
         {
+            //Se genera un identificador único para el día.
             Key = Guid.NewGuid().ToString();
         }
 
-
+        /// <summary>
+        /// Metodo para serializar los datos
+        /// </summary>
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue("Key", Key);
