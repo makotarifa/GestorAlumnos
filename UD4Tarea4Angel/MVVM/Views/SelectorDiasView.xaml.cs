@@ -146,6 +146,31 @@ public partial class SelectorDiasView : ContentPage
 
     }
 
+    private async void OnBorrarClicked(object sender, EventArgs e)
+    {
+        if (await ActivityExistOnDay(SDVM.ActividadActual.Key, SDVM.ActividadActual.DiaKey))
+        {
+            await FirebaseConnection.firebaseClient
+                .Child("Actividades")
+                .Child(SDVM.ActividadActual.Key)
+                .DeleteAsync();
+
+            await this.DisplayAlert("Confirmacion", "Se ha borrado la actividad.", "Vale");
+
+            SDVM.Actividades = await GetAllActivitiesFromDay(SDVM.Dia.Key);
+
+            SDVM.ActividadActual = new Actividad
+            {
+                DiaKey = SDVM.Dia.Key,
+            };
+
+        } else
+        {
+            await this.DisplayAlert("Error", "La actividad no existe o aun no se ha introducido.", "Vale");
+        }
+
+    }
+
     /// <summary>
     /// Evento que se ejecuta cuando se pulsa el botón de agregar o editar actividad.
     /// </summary>

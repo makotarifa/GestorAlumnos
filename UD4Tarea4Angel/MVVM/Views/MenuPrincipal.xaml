@@ -13,6 +13,8 @@
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
 
+        <Image x:Name="fotoURL" HeightRequest="200" HorizontalOptions="CenterAndExpand" BackgroundColor="#006876"/>
+
         <Button Text="Gestionar dias" Clicked="OnDiasClicked" HorizontalOptions="Center" BackgroundColor="#fea643" TextColor="#f3f9fa" Margin="0, 0"/>
 
         <Button Text="Editar información" Clicked="OnGestionarClicked" HorizontalOptions="Center" BackgroundColor="#fea643" TextColor="#f3f9fa" Margin="0, 0"/>

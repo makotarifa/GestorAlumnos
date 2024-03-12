@@ -32,6 +32,8 @@ public partial class EditarInfoAlumnoView : ContentPage
         RUVM.Persona = await GetPersona(currentUsername);
 
         BindingContext = RUVM;
+
+        fotoURL.Source = RUVM.Persona.FotoUrl;
     }
 
     /// <summary>
@@ -52,7 +54,7 @@ public partial class EditarInfoAlumnoView : ContentPage
         //Si no se cumplen los campos obligatorios, se muestra un mensaje de error.
         if (!string.IsNullOrWhiteSpace(RUVM.Persona.Nombre) && !string.IsNullOrWhiteSpace(RUVM.Persona.Apellidos) && !string.IsNullOrWhiteSpace(RUVM.Persona.DNI)
              && !string.IsNullOrWhiteSpace(RUVM.Persona.CentroEstudio) && !string.IsNullOrWhiteSpace(RUVM.Persona.TipoGrado) && !string.IsNullOrWhiteSpace(RUVM.Persona.NombreGrado)
-              && !string.IsNullOrWhiteSpace(RUVM.Persona.ProfesorTutor) && !string.IsNullOrWhiteSpace(RUVM.Persona.CentroTrabajo) && !string.IsNullOrWhiteSpace(RUVM.Persona.TutorLaboral))
+              && !string.IsNullOrWhiteSpace(RUVM.Persona.ProfesorTutor) && !string.IsNullOrWhiteSpace(RUVM.Persona.CentroTrabajo) && !string.IsNullOrWhiteSpace(RUVM.Persona.TutorLaboral) && !string.IsNullOrWhiteSpace(RUVM.Persona.FotoUrl))
         {
             // Se comprueba si el profesor tutor indicado existe con el metodo CheckIfProfesorUserExists.
             profesorExist = await CheckIfProfesorUserExists(RUVM.Persona.ProfesorTutor);
@@ -114,5 +116,15 @@ public partial class EditarInfoAlumnoView : ContentPage
 
         return persona.Object;
 
+    }
+
+    /// <summary>
+    /// Evento que se ejecuta cuando se pulsa el botón de subir imagen. Se encarga de subir una imagen a la base de datos.
+    /// </summary>
+    private async void OnSubirImagenClicked(object sender, EventArgs e)
+    {
+        var foto = await FirebaseConnection.storageUploadPhoto();
+        RUVM.Persona.FotoUrl = foto.ToString();
+        fotoURL.Source = foto.ToString();
     }
 }

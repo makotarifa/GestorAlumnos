@@ -40,6 +40,14 @@
             <Entry x:Name="dniEntry" PlaceholderColor="#e3953e" TextColor="#fafafa"
             Placeholder="DNI"               
             Text="{Binding Persona.DNI}" />
+            <Label Text="Foto de Perfil (*)" TextColor="#fafafa"/>
+            <Image x:Name="fotoURL" HeightRequest="200" HorizontalOptions="StartAndExpand" BackgroundColor="#006876"/>
+            <Button Text="Subir Imagen"
+                     x:Name="subirImagen"
+                    HorizontalOptions="Start"
+                     TextColor="#fafafa"
+                     BackgroundColor="#fea643"
+                     Clicked="OnSubirImagenClicked"/>
             <Label Text="Centro (*): " TextColor="#fafafa"/>
             <Picker SelectedItem="{Binding Persona.CentroEstudio}" TextColor="#fafafa">
                 <Picker.Items>

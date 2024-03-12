@@ -4,31 +4,34 @@
              x:Class="UD4Tarea4Angel.MVVM.Views.SelectorAlumnosView"
              Title=""
              BackgroundColor="#008193">
-    <VerticalStackLayout Spacing="20" Padding="20">
+    <VerticalStackLayout Spacing="20" Padding="20" VerticalOptions="StartAndExpand">
         <Label 
             Text="Listado de alumnos a cargo." TextColor="#fafafa"
             FontSize="Medium"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
 
-        <ListView x:Name="alumnosListView" ItemsSource="{Binding AlumnosCollection}" ItemTapped="OnAlumnoTapped">
+        <ListView x:Name="alumnosListView" ItemsSource="{Binding AlumnosCollection}" ItemTapped="OnAlumnoTapped" SeparatorColor="#CCCCCC">
             <ListView.ItemTemplate>
                 <DataTemplate >
-                    <ViewCell >
-                        <VerticalStackLayout Padding="0, 0, 0, 20">
-                            <Label Text="{Binding UserName, StringFormat='Usuario: {0}'}" TextColor="#fafafa"/>
-                            <HorizontalStackLayout>
-                                <Label Text="{Binding Nombre, StringFormat='Nombre: {0}'}" TextColor="#fafafa"/>
-                                <Label Padding="10, 0, 0, 0" Text="{Binding Apellidos, StringFormat='Apellidos: {0}'}" TextColor="#fafafa"/>
+                    <ViewCell>
+                        <VerticalStackLayout Padding="20" VerticalOptions="CenterAndExpand" HeightRequest="100">
+                            <HorizontalStackLayout VerticalOptions="Center">
+                                <VerticalStackLayout VerticalOptions="Center" Padding="20" Spacing="10">
+                                    <Label Text="{Binding UserName, StringFormat='Usuario: {0}'}" TextColor="#fafafa"/>
+                                    <HorizontalStackLayout>
+                                        <Label Text="{Binding Nombre, StringFormat='Nombre: {0}'}" TextColor="#fafafa"/>
+                                        <Label Padding="10, 0, 0, 0" Text="{Binding Apellidos, StringFormat='Apellidos: {0}'}" TextColor="#fafafa"/>
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                                <Image Source="{Binding FotoUrl}" HeightRequest="75"/>
                             </HorizontalStackLayout>
+
 
                         </VerticalStackLayout>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
-            <ListView.SeparatorColor>
-                <Color>#CCCCCC</Color>
-            </ListView.SeparatorColor>
         </ListView>
         
     </VerticalStackLayout>

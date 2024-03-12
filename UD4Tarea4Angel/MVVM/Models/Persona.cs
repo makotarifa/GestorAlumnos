@@ -62,8 +62,14 @@ namespace UD4Tarea4Angel.Models
         public string UserName { get; set; }
 
         /// <summary>
+        /// Url de la foto de la persona.
+        /// </summary>
+        public string FotoUrl { get; set; }
+
+        /// <summary>
         /// Constructor de la clase Persona.
         /// </summary>
+
         public Persona() {
             //Se genera un identificador único para la persona.
             Key = Guid.NewGuid().ToString();

@@ -14,12 +14,21 @@ public partial class InicioSesionView : ContentPage
 {
     UserViewModel uVM = new UserViewModel();
     bool modoProfesor = false;
+    private string emailAdmin = "registrosfbangel@fb.es";
+    private string passAdmin = "registrosfb872";
     public InicioSesionView()
 	{
         InitializeComponent();
         BindingContext = uVM;
-
+        MainThread.BeginInvokeOnMainThread(new Action(async () =>
+        {
+            await (FirebaseConnection.obtenerTokenRegistro());
+        }));
     }
+
+    /// <summary>
+    /// Metodo que inicia la conexion con Firebase para el login.
+    /// </summary>
 
     //Texto que indica el modo seleccionado en el switch.
     private void OnSwitchToggled ( object sender, ToggledEventArgs e)
@@ -46,7 +55,6 @@ public partial class InicioSesionView : ContentPage
         var password = uVM.UserItem.Password;
         bool userCorrect;
 
-
         //Si los campos de email y contraseña no están vacíos, se comprueba si el usuario y la contraseña son correctos.
         if (!string.IsNullOrWhiteSpace(email) && !string.IsNullOrWhiteSpace(password))
         {
@@ -55,6 +63,8 @@ public partial class InicioSesionView : ContentPage
 
             if (userCorrect)
             {
+                await FirebaseConnection.obtenerToken(email, hashPassword);
+
                 actualUsername = await GetUsername(email);
                 //Si el usuario es correcto, se abre la página de menú principal. Segun el modo seleccionado, se abre el menú principal de profesor o de alumno.
                 if (!modoProfesor)

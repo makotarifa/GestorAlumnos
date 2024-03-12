@@ -17,8 +17,12 @@ public partial class RegistroProfesorView : ContentPage
     {
         InitializeComponent();
         BindingContext = RUVM;
-
+        MainThread.BeginInvokeOnMainThread(new Action(async () =>
+        {
+            await (FirebaseConnection.obtenerTokenRegistro());
+        }));
     }
+
 
     /// <summary>
     /// Evento que se ejecuta cuando se pulsa el botón de registro. Se encarga de registrar un nuevo usuario en la base de datos.
@@ -29,7 +33,6 @@ public partial class RegistroProfesorView : ContentPage
         string hashPassword;
         //Booleans de las comprobaciones
         bool userExists, emailExists, validEmail;
-
 
         if (!string.IsNullOrWhiteSpace(RUVM.UserItem.UserName) && !string.IsNullOrWhiteSpace(RUVM.UserItem.Password) && !string.IsNullOrWhiteSpace(RUVM.UserItem.Email))
         {
@@ -55,6 +58,7 @@ public partial class RegistroProfesorView : ContentPage
                             hashPassword = Encript.GetSHA256(RUVM.UserItem.Password);
 
                             //Envio la informacion a ProfesorUsers
+                            await FirebaseConnection.fbAuthClient.CreateUserWithEmailAndPasswordAsync(RUVM.UserItem.Email, hashPassword);
 
                             await FirebaseConnection.firebaseClient.Child("ProfesorUsers").PostAsync(new UserItem
                             {
@@ -71,6 +75,8 @@ public partial class RegistroProfesorView : ContentPage
                             await FirebaseConnection.firebaseClient.Child("DatosProfesor").Child(RUVM.Persona.Key).PutAsync(RUVM.Persona);
 
                             await this.DisplayAlert("Confirmacion", "Usuario creado con exito.", "Vale");
+
+                            FirebaseConnection.cerrarFirebase();
 
                             await Navigation.PopAsync();
                         }

@@ -10,12 +10,17 @@ namespace UD4Tarea4Angel.MVVM.Views;
 public partial class RegistroView : ContentPage
 {
     RegisterUserViewModel RUVM = new RegisterUserViewModel();
+
     public RegistroView()
 	{
         InitializeComponent();
         BindingContext = RUVM;
-
+        MainThread.BeginInvokeOnMainThread(new Action(async () =>
+        {
+            await (FirebaseConnection.obtenerTokenRegistro());
+        }));
     }
+
 
     /// <summary>
     /// Evento que se ejecuta cuando se pulsa el botón de registro. Se encarga de registrar un nuevo usuario en la base de datos.
@@ -24,6 +29,7 @@ public partial class RegistroView : ContentPage
     {
         //Booleans de las comprobaciones
         bool userExists, profesorExists, correoExists, validEmail;
+        string hashPass;
 
         // Si no se cumplen los campos obligatorios, se muestra un mensaje de error.
         if (!string.IsNullOrWhiteSpace(RUVM.UserItem.UserName) && !string.IsNullOrWhiteSpace(RUVM.UserItem.Password) && !string.IsNullOrWhiteSpace(RUVM.UserItem.Email))
@@ -41,7 +47,7 @@ public partial class RegistroView : ContentPage
             //Si se cumplen los campos obligatorios, se comprueba si el profesor tutor indicado existe con el metodo CheckIfProfesorUserExists.
             if(!string.IsNullOrWhiteSpace(RUVM.Persona.Nombre) && !string.IsNullOrWhiteSpace(RUVM.Persona.Apellidos) && !string.IsNullOrWhiteSpace(RUVM.Persona.DNI)
                  && !string.IsNullOrWhiteSpace(RUVM.Persona.CentroEstudio) && !string.IsNullOrWhiteSpace(RUVM.Persona.TipoGrado) && !string.IsNullOrWhiteSpace(RUVM.Persona.NombreGrado)
-                  && !string.IsNullOrWhiteSpace(RUVM.Persona.ProfesorTutor) && !string.IsNullOrWhiteSpace(RUVM.Persona.CentroTrabajo) && !string.IsNullOrWhiteSpace(RUVM.Persona.TutorLaboral))
+                  && !string.IsNullOrWhiteSpace(RUVM.Persona.ProfesorTutor) && !string.IsNullOrWhiteSpace(RUVM.Persona.CentroTrabajo) && !string.IsNullOrWhiteSpace(RUVM.Persona.TutorLaboral) && !string.IsNullOrWhiteSpace(RUVM.Persona.FotoUrl))
             {
                 profesorExists = await CheckIfProfesorUserExists(RUVM.Persona.ProfesorTutor);
 
@@ -52,12 +58,18 @@ public partial class RegistroView : ContentPage
                         if (!correoExists)
                         {
                             if (!userExists)
-                            {  // Agregar el nuevo usuario si no existe
+                            {  
+                                // Agregar el nuevo usuario si no existe
+
+                                hashPass = Encript.GetSHA256(RUVM.UserItem.Password);
+
+                                await FirebaseConnection.fbAuthClient.CreateUserWithEmailAndPasswordAsync(RUVM.UserItem.Email, hashPass);
+
                                 await FirebaseConnection.firebaseClient.Child("AlumnoUsers").PostAsync(new UserItem
                                 {
                                     UserName = RUVM.UserItem.UserName,
                                     //Se encripta la contraseña
-                                    Password = Encript.GetSHA256(RUVM.UserItem.Password),
+                                    Password = hashPass,
                                     Email = RUVM.UserItem.Email
                                 });
 
@@ -69,6 +81,8 @@ public partial class RegistroView : ContentPage
 
 
                                 await this.DisplayAlert("Confirmacion", "Usuario creado con exito.", "Vale");
+
+                                FirebaseConnection.cerrarFirebase();
 
                                 await Navigation.PopAsync();
                             }
@@ -101,6 +115,16 @@ public partial class RegistroView : ContentPage
         {
             await this.DisplayAlert("Error", "Debe rellenar los campos de Usuario, Correo y Contraseña.", "Vale");
         }
+    }
+
+    /// <summary>
+    /// Evento que se ejecuta cuando se pulsa el botón de subir imagen. Se encarga de subir una imagen a la base de datos.
+    /// </summary>
+    private async void OnSubirImagenClicked(object sender, EventArgs e)
+    {
+        var foto = await FirebaseConnection.storageUploadPhoto();
+        RUVM.Persona.FotoUrl = foto.ToString();
+        fotoURL.Source = foto.ToString();
     }
 
     /// <summary>
